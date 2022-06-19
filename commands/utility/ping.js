@@ -5,9 +5,9 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ping')
 		.setDescription('Replies with client\'s ping'),
-	async execute(interaction) {
+	async execute(interaction, client) {
 		let embed = new MessageEmbed()
-			.setDescription(`Pong! - ${Date.now() - interaction.createdTimestamp}ms`)
+			.setDescription(`Pong! - ${client.ws.ping}ms`)
 			.setColor("RANDOM")
 			.setFooter({text: `Requested by ${interaction.user.username}`})
 			

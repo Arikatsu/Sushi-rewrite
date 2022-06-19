@@ -8,7 +8,7 @@ module.exports = {
 		if (!command) return;
  
 		try {
-			await command.execute(interaction, message, client);
+			await command.execute(interaction, client, message);
 		} catch (error) {
 			console.error(error);
 			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
