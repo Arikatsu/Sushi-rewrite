@@ -13,7 +13,7 @@ module.exports = {
             .setColor('#0099ff')
             .setAuthor({ name: msg.author.tag })
             .setDescription(msg.content)
-            .setImage(msg.image)
+            .setImage(msg.image.url)
             await interaction.reply({embeds: [embed]})
         }
         else {
