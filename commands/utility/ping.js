@@ -4,7 +4,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ping')
-		.setDescription('Replies with Pong!'),
+		.setDescription('Replies with client\'s ping'),
 	async execute(interaction) {
 		let embed = new MessageEmbed()
 			.setDescription(`Pong! - ${Date.now() - interaction.createdTimestamp}ms`)

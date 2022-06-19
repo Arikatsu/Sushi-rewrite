@@ -23,16 +23,6 @@ db.on("ready", () => {
     console.log("Connected to the database");
 });
 
-// client.on("messageCreate", message => {
-//     if(message.content == '-snipe') {
-//         const msg = client.snipes.get(message.channel.id)
-//         if (!msg) return message.reply("There's nothing to snipe!")
-//         let author = msg.author
-//         let content = msg.content
-//         message.reply({ content: `${author}, ${content}` })
-//     }
-// })
-
 db.connect(); 
 
 (async () => {

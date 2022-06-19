@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('snipe')
         .setDescription('sniped the last deleted message'),
-    async execute(interaction, message, client) {
+    async execute(interaction, client) {
         const msg = client.snipes.get(interaction.channel.id)
         if (!msg) return interaction.reply("There's nothing to snipe!")
         else if (msg.image) {
