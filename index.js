@@ -1,8 +1,6 @@
 const { Client, Collection } = require("discord.js");
 const fs = require('fs')
 const { token, dbLink } = require('./config.json')
-const { Database } = require('quickmongo')
-const db = new Database(dbLink);
 
 const client = new Client({intents: 32767})
 const express = require('express');
@@ -18,12 +16,6 @@ const commandFolder = fs.readdirSync("./commands")
 
 app.get('/', (req, res) => res.send('bot is working'));
 app.listen(port, () => console.log(`Your app is listening at http://localhost:${port}`));
-
-db.on("ready", () => {
-    console.log("Connected to the database");
-});
-
-db.connect(); 
 
 (async () => {
     for (file of handlers) {
