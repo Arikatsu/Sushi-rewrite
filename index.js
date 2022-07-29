@@ -1,8 +1,18 @@
 const { Client, Collection } = require("discord.js");
 const fs = require('fs')
-const { token, dbLink } = require('./config.json')
+const { token } = require('./config.json')
 
-const client = new Client({intents: 32767})
+const client = new Client({
+    presence: {
+        status: 'online',
+        afk: false,
+        activities: [{
+            name: 'deez nuts',
+            type: 'COMPETING'
+        }],
+    },
+    intents: 32767
+})
 const express = require('express');
 const app = express();
 const port = 3000;

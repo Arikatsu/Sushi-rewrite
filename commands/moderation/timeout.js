@@ -7,7 +7,7 @@ module.exports = {
         .setName('timeout')
         .setDescription('Timeouts a user')
         .addUserOption(option => option.setName('user').setDescription('user to timeout').setRequired(true))
-        .addIntegerOption(option => option.setName('time').setDescription('time to timeout in minutes').setRequired(true))
+        .addIntegerOption(option => option.setName('time').setDescription('time to timeout in minutes, 0 to remove timeout').setRequired(true))
         .addStringOption(option => option.setName('reason').setDescription('reason to timeout').setRequired(false)),
     async execute(interaction) {
         let user = interaction.options.getUser('user');

@@ -4,8 +4,5 @@ node_modules/
 #no one likes config
 config.json
 
-#sorry this one is for me
-checklist.md
-
 #why will i leak database lol
 db/
