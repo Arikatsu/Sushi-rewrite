@@ -1,3 +1,6 @@
+const Logger = require('./../utils/logger')
+const c = new Logger()
+
 module.exports = {
 	name: 'ready',
 	execute(client) {
