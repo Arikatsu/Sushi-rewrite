@@ -1,5 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
+const Logger = require('../../utils/logger')
+const c = new Logger()
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -28,7 +30,7 @@ module.exports = {
                 limit: amount,
             }).then((messages) => {
                 messages = messages.filter(m => m.author.id === member.id)
-                interaction.channel.bulkDelete(messages).catch(error => console.log(error.stack));
+                interaction.channel.bulkDelete(messages).catch(error => c.error(error.stack));
             });
             interaction.reply(`\`${amount}\` messages have been deleted from \`${user.username}\``)
         }

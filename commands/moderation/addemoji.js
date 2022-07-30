@@ -1,5 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { Util, Permissions } = require("discord.js");
+const Logger = require('../../utils/logger')
+const c = new Logger()
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -20,7 +22,7 @@ module.exports = {
                 const Link = `https://cdn.discordapp.com/emojis/${emoji.id}.${emoji.animated ? "gif" : "png"}`
                 interaction.guild.emojis.create(`${Link}`, `${`${emoji.name}`}`).then(em => interaction.channel.send(em.toString() + " added!")).catch(error => {
                     interaction.reply(":x: | an Error occured")
-                    console.log(error)
+                    c.error(error)
                 })
             }
         })

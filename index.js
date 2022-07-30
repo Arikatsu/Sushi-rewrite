@@ -1,6 +1,9 @@
 const { Client, Collection } = require("discord.js");
 const fs = require('fs')
 const { token } = require('./config.json')
+const { Player } = require('discord-player')
+const Logger = require('./utils/logger')
+const c = new Logger()
 
 const client = new Client({
     presence: {
@@ -24,8 +27,17 @@ const handlers = fs.readdirSync("./handlers").filter(file => file.endsWith(".js"
 const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
 const commandFolder = fs.readdirSync("./commands")
 
+client.player = new Player(client, {
+    leaveOnEnd: true,
+    leaveOnStop: true,
+    leaveOnEmpty: true,
+    leaveOnEmptyCooldown: 60000,
+    autoSelfDeaf: true,
+    initialVolume: 100
+})
+
 app.get('/', (req, res) => res.send('bot is working'));
-app.listen(port, () => console.log(`Your app is listening at http://localhost:${port}`));
+app.listen(port, () => c.info(`Your app is listening at http://localhost:${port}`));
 
 (async () => {
     for (file of handlers) {

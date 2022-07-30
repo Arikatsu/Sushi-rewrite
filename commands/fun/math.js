@@ -1,5 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed } = require("discord.js");
+const Logger = require('../../utils/logger')
+const c = new Logger()
 const math = require("mathjs")
 
 module.exports = {
@@ -18,7 +20,7 @@ module.exports = {
                 .setDescription(ans.toString())
             interaction.reply({embeds: [embed]});
         } catch (error) {
-            interaction.reply(`Please Give Me Valid Equation | Try Again Later!`).then(() => console.log(error));
+            interaction.reply(`Please Give Me Valid Equation | Try Again Later!`).then(() => c.error(error));
         }
     }
 }

@@ -2,6 +2,8 @@ const fetch = require("node-fetch")
 const moment = require("moment")
 const { SlashCommandBuilder } = require("@discordjs/builders")
 const { MessageEmbed } = require('discord.js')
+const Logger = require('../../utils/logger')
+const c = new Logger()
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,7 +12,7 @@ module.exports = {
         .addStringOption(option => option.setName('query').setDescription('name of the npm package').setRequired(true)),
     async execute(interaction) {
         let query = interaction.options.getString('query')
-        const res = await fetch(`https://registry.npmjs.com/${encodeURIComponent(query)}`).catch(err => console.log(err))
+        const res = await fetch(`https://registry.npmjs.com/${encodeURIComponent(query)}`).catch(err => c.error(err))
         if (res.status === 404)
             return interaction.reply('No search results found, maybe try searching for something that exists.')
         const body = await res.json()

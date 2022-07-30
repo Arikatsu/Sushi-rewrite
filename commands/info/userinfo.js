@@ -1,5 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed } = require("discord.js");
+const Logger = require('../../utils/logger')
+const c = new Logger()
 const moment = require('moment')
 
 module.exports = {
@@ -69,7 +71,7 @@ module.exports = {
 
         return interaction.reply({ embeds: [embed] }).catch(err => {
             interaction.reply("Error : " + err)
-            return console.log(err)
+            return c.error(err)
         })
     }
 }

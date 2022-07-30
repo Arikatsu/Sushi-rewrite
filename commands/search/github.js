@@ -2,6 +2,8 @@ const fetch = require("node-fetch")
 const moment = require("moment")
 const { SlashCommandBuilder } = require("@discordjs/builders")
 const { MessageEmbed } = require("discord.js")
+const Logger = require('../../utils/logger')
+const c = new Logger()
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -36,7 +38,7 @@ module.exports = {
                 })
 
         } catch (error) {
-            console.log(`[Commands] [github] Getting Error In github Command :\n`, error);
+            c.error(error);
             return interaction.reply(`Something Went Wrong Try Again Later!`)
         }
     }

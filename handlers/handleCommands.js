@@ -2,6 +2,8 @@ const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { token } = require('../config.json')
 const fs = require('node:fs');
+const Logger = require('./utils/logger')
+const c = new Logger()
 const clientId = '985330686711963678';
 const guildId = '878562477275750430';
 
@@ -20,16 +22,16 @@ module.exports = (client) => {
 
         (async () => {
             try {
-                console.log('Started refreshing application (/) commands.');
+                c.info('Started refreshing application (/) commands.');
 
                 await rest.put(
                     Routes.applicationGuildCommands(clientId, guildId),
                     { body: client.commandArray },
                 );
 
-                console.log('Successfully reloaded application (/) commands.');
+                c.info('Successfully reloaded application (/) commands.');
             } catch (error) {
-                console.error(error);
+                c.error(error);
             }
         })();
     }
