@@ -47,3 +47,6 @@ app.listen(port, () => c.info(`Your app is listening at http://localhost:${port}
     client.handleCommands(commandFolder, './commands')
     client.login(token)
 })();
+
+client.on("debug", (debug) => c.debug(debug))
+client.on("warn", (warning) => c.warn(warning))
