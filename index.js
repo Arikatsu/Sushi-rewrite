@@ -27,14 +27,16 @@ const handlers = fs.readdirSync("./handlers").filter(file => file.endsWith(".js"
 const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
 const commandFolder = fs.readdirSync("./commands")
 
-client.player = new Player(client, {
-    leaveOnEnd: true,
-    leaveOnStop: true,
-    leaveOnEmpty: true,
+const player = new Player(client, {
+    leaveOnEnd: false,
+    leaveOnStop: false,
+    leaveOnEmpty: false,
     leaveOnEmptyCooldown: 60000,
     autoSelfDeaf: true,
     initialVolume: 100
 })
+
+client.player = player
 
 app.get('/', (req, res) => res.send('bot is working'));
 app.listen(port, () => c.info(`Your app is listening at http://localhost:${port}`));
@@ -48,5 +50,13 @@ app.listen(port, () => c.info(`Your app is listening at http://localhost:${port}
     client.login(token)
 })();
 
-client.on("debug", (debug) => c.debug(debug))
+// client.on("debug", (debug) => c.debug(debug))
 client.on("warn", (warning) => c.warn(warning))
+
+player.on("error", (queue, error) => {
+    c.error(error)
+})
+
+player.on('connectionError', (queue, error) => {
+    c.error(`Error emitted from the connection ${error.message}`);
+})

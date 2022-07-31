@@ -1,3 +1,6 @@
+const Logger = require('./../utils/logger')
+const c = new Logger()
+
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction, client, message) {
@@ -10,7 +13,7 @@ module.exports = {
 		try {
 			await command.execute(interaction, client, message);
 		} catch (error) {
-			console.error(error);
+			c.error(error);
 			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 		}
 	},

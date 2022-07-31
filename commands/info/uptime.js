@@ -14,6 +14,7 @@ module.exports = {
         let embed = new MessageEmbed()
             .setTitle('**Sushi\'s Uptime**')
             .setDescription(`${days}d ${hours}h ${minutes}m ${seconds}s`)
+            .setColor('RANDOM')
             .setTimestamp()
         
         interaction.reply({embeds: [embed]})
