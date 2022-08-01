@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
-    callback: async (message, client, ...args) => {
+    callback: async (message, client) => {
         let i0 = 0
         let i1 = 10
         let page = 1
