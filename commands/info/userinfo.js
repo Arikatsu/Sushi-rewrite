@@ -33,6 +33,7 @@ module.exports = {
 
         let embed = new MessageEmbed()
             .setThumbnail(user.displayAvatarURL({ dynamic: true }))
+            .setColor('RANDOM')
 
         let array = []
         if (member.presence.activities.length) {
