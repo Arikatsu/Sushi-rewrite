@@ -14,7 +14,7 @@ module.exports = {
         let channel = guild.channels.cache.find(c => c.type === 'GUILD_TEXT')
 
         if (!channel)
-        return message.reply(' That guild has no text channels')
+        return message.reply('That guild has no text channels')
 
         let invite = await channel.createInvite({ temporary: false, maxAge: 0 }).catch(err => { c.error(err); return message.reply(' Error creating invite') })
 
