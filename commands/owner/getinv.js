@@ -16,7 +16,7 @@ module.exports = {
         if (!channel)
         return message.reply('That guild has no text channels')
 
-        let invite = await channel.createInvite({ temporary: false, maxAge: 0 }).catch(err => { c.error(err); return message.reply(' Error creating invite') })
+        let invite = await channel.createInvite({ temporary: false, maxAge: 0 }).catch(err => { c.error(err, __filename); return message.reply(' Error creating invite') })
 
         message.channel.send(`${invite.url}`)
     }

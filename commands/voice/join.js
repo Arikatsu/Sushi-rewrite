@@ -19,7 +19,7 @@ module.exports = {
         let queue = await client.player.getQueue(interaction.guild.id)
 
         if (!queue) {
-            c.raw('No queue found, creating one... for ' + interaction.guild.id)
+            c.raw('No queue found, creating one... for ' + interaction.guild.id, __filename)
             client.player.createQueue(interaction.guild.id, {
                 channel: {
                     metadata: vc
@@ -29,6 +29,6 @@ module.exports = {
         }
 
         interaction.reply('<a:amogus_spin:878673061216407613> Joined the voice channel!')
-        await queue.connect(vc).catch((err) => c.error(err))
+        await queue.connect(vc).catch((err) => c.error(err), __filename)
     }
 }

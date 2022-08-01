@@ -14,7 +14,7 @@ module.exports = {
             try {
                 queue.previousTracks = []
             } catch {
-                c.error('No previous tracks to clear!')
+                c.error('No previous tracks to clear!', __filename)
             }
         }
 

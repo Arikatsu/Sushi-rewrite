@@ -14,7 +14,7 @@ module.exports = {
         return interaction.reply('I am not in a voice channel!')
 
         if (!queue) {
-            c.raw('No queue found, creating one... for ' + interaction.guild.id)
+            c.raw('No queue found, creating one... for ' + interaction.guild.id, __filename)
             client.player.createQueue(interaction.guild.id, {
                 channel: {
                     metadata: vc
@@ -24,6 +24,6 @@ module.exports = {
         }
 
         interaction.reply('<a:amogus_spin:878673061216407613> Left the voice channel!')
-        await queue.destory({ disconnect: true }).catch((err) => c.error(err))
+        await queue.destory({ disconnect: true }).catch((err) => c.error(err), __filename)
     }
 }

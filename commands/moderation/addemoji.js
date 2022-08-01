@@ -22,7 +22,7 @@ module.exports = {
                 const Link = `https://cdn.discordapp.com/emojis/${emoji.id}.${emoji.animated ? "gif" : "png"}`
                 interaction.guild.emojis.create(`${Link}`, `${`${emoji.name}`}`).then(em => interaction.channel.send(em.toString() + " added!")).catch(error => {
                     interaction.reply(":x: | an Error occured")
-                    c.error(error)
+                    c.error(error, __filename)
                 })
             }
         })

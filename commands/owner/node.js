@@ -26,7 +26,7 @@ module.exports = {
             const cleaned = await clean(client, evaled)
             message.channel.send(`\`\`\`js\n${cleaned}\n\`\`\``)
         } catch (err) {
-            c.error(err)
+            c.error(err, __filename)
             message.channel.send(`\`\`\`\n${err}\n\`\`\``)
         }
     }

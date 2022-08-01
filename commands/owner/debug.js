@@ -12,12 +12,12 @@ module.exports = {
         switch(args[0].toLowerCase()) {
             case 'on':
                 message.reply('Enabling client debug mode...')
-                c.info('Enabling client debug mode...')
+                c.info('Enabling client debug mode...', __filename)
                 debug = true
                 break;
             case 'off':
                 message.reply('Disabling client debug mode...')
-                c.info('Disabling client debug mode...')
+                c.info('Disabling client debug mode...', __filename)
                 debug = false
                 break;
             default:
@@ -27,7 +27,7 @@ module.exports = {
 
         client.on('debug', (logs) => {
             if (debug === true) {
-                c.debug(logs)
+                c.debug(logs, __filename)
                 channel.send(`\`[DEBUG] ${logs}\``)
             } else {
                 return

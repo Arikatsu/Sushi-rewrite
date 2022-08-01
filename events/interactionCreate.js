@@ -13,7 +13,7 @@ module.exports = {
 		try {
 			await command.execute(interaction, client, message);
 		} catch (error) {
-			c.error(error);
+			c.error(error, __filename);
 			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 		}
 	},

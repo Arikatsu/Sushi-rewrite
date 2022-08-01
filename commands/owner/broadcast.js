@@ -31,7 +31,7 @@ module.exports = {
                 channel.send({ embeds: [msg] })
             })
         } catch (err) {
-            c.error("Could not send message to a (few) guild(s)! " + err)
+            c.error("Could not send message to a (few) guild(s)! " + err, __filename)
         }
     }
 }

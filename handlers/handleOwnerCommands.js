@@ -41,7 +41,7 @@ module.exports = async (client) => {
         commands[commandName.toLowerCase()] = commandFile
     }
 
-    c.info(`Logging owner commands: [${Object.keys(commands).join(', ')}]`)
+    c.info(`Logging owner commands: [${Object.keys(commands).join(', ')}]`, __filename)
 
     client.on('messageCreate', (message) => {
         if (message.author.bot || message.author.id != config.ownerID) return
@@ -57,7 +57,7 @@ module.exports = async (client) => {
         try {
             commands[commandName].callback(message, client, ...args)
         } catch (error) {
-           c.error(error)
+           c.error(error, __filename)
         }
     })
 }

@@ -38,7 +38,7 @@ module.exports = {
                 })
 
         } catch (error) {
-            c.error(error);
+            c.error(error, __filename);
             return interaction.reply(`Something Went Wrong Try Again Later!`)
         }
     }

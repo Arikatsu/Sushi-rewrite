@@ -20,7 +20,7 @@ module.exports = {
                 .setDescription(ans.toString())
             interaction.reply({embeds: [embed]});
         } catch (error) {
-            interaction.reply(`Please Give Me Valid Equation | Try Again Later!`).then(() => c.error(error));
+            interaction.reply(`Please Give Me Valid Equation | Try Again Later!`).then(() => c.error(error, __filename));
         }
     }
 }

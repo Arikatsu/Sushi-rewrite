@@ -72,7 +72,7 @@ module.exports = {
 
         return interaction.reply({ embeds: [embed] }).catch(err => {
             interaction.reply("Error : " + err)
-            return c.error(err)
+            return c.error(err, __filename)
         })
     }
 }

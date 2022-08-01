@@ -1,3 +1,5 @@
+var path = require('path');
+
 const log = {
     reset: '\x1b[0m',
     bold: '\x1b[1m',
@@ -12,32 +14,29 @@ const log = {
 }
 
 class Logger {
-    date() {
-        return new Date().toLocaleString();
+    log(type, message, file) {
+        var fn = path.basename(file)
+        console.log(`${log.color[type]}[${type.toUpperCase()}:${log.reset}${log.bold}${fn}${log.reset}${log.color[type]}]${log.reset} ${log.dim}${message}${log.reset}`);
     }
 
-    log(type, message) {
-        console.log(`${log.bold}[${this.date()}] => ${log.reset}${log.color[type]}[${type.toUpperCase()}]${log.reset} ${log.dim}${message}${log.reset}`);
+    error(message, file) {
+        this.log('error', message, file);
     }
 
-    error(message) {
-        this.log('error', message);
+    info(message, file) {
+        this.log('info', message, file);
     }
 
-    info(message) {
-        this.log('info', message);
+    warn(message, file) {
+        this.log('warn', message, file);
     }
 
-    warn(message) {
-        this.log('warn', message);
+    debug(message, file) {
+        this.log('debug', message, file);
     }
 
-    debug(message) {
-        this.log('debug', message);
-    }
-
-    raw(message) {
-        this.log('raw', message);
+    raw(message, file) {
+        this.log('raw', message, file);
     }
 }
 

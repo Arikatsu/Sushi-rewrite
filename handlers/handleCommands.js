@@ -23,16 +23,16 @@ module.exports = (client) => {
 
         (async () => {
             try {
-                c.info('Started refreshing application (/) commands.');
+                c.info('Started refreshing application (/) commands.', __filename);
 
                 await rest.put(
                     Routes.applicationGuildCommands(clientId, guildId),
                     { body: client.commandArray },
                 );
 
-                c.info('Successfully reloaded application (/) commands.');
+                c.info('Successfully reloaded application (/) commands.', __filename);
             } catch (error) {
-                c.error(error);
+                c.error(error, __filename);
             }
         })();
     }

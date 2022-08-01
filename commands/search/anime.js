@@ -10,7 +10,7 @@ module.exports = {
     async execute(interaction) {
         let search = interaction.options.getString('query')
         await malScraper.getInfoFromName(search)
-            .then((data) => {
+            .then(async (data) => {
                 const malEmbed = new MessageEmbed()
                     .setTitle(`My Anime List search result for ${search}`)
                     .setThumbnail(data.picture)
@@ -39,7 +39,7 @@ module.exports = {
                     .addField('Link', data.url, true)
                     .setTimestamp()
                     .setFooter({text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL({ dynamic: true })})
-                interaction.reply({embeds: [malEmbed]})
+                await interaction.reply({embeds: [malEmbed]})
             }
         )
     }

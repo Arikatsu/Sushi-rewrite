@@ -39,7 +39,7 @@ const player = new Player(client, {
 client.player = player
 
 app.get('/', (req, res) => res.send('bot is working'));
-app.listen(port, () => c.info(`Your app is listening at http://localhost:${port}`));
+app.listen(port, () => c.info(`Your app is listening at http://localhost:${port}`, __filename));
 
 (async () => {
     for (file of handlers) {
@@ -50,12 +50,12 @@ app.listen(port, () => c.info(`Your app is listening at http://localhost:${port}
     client.login(token)
 })();
 
-client.on("warn", (warning) => c.warn(warning))
+client.on("warn", (warning) => c.warn(warning, __filename))
 
 player.on("error", (queue, error) => {
-    c.error(error)
+    c.error(error, __filename)
 })
 
 player.on('connectionError', (queue, error) => {
-    c.error(`Error emitted from the connection ${error.message}`);
+    c.error(`Error emitted from the connection ${error.message}`, __filename);
 })

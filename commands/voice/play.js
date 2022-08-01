@@ -24,7 +24,7 @@ module.exports = {
             let queue = client.player.getQueue(interaction.guild.id)
 
             if (!queue) {
-                c.raw('No queue found, creating one... for ' + interaction.guild.id)
+                c.raw('No queue found, creating one... for ' + interaction.guild.id, __filename)
                 client.player.createQueue(interaction.guild.id, {
                     channel: {
                         metadata: vc
@@ -33,10 +33,10 @@ module.exports = {
                 queue = client.player.getQueue(interaction.guild.id)
             }
 
-            let audio = await client.player.search(query, { requestedBy: interaction.user }).catch((err) => c.error(err))
+            let audio = await client.player.search(query, { requestedBy: interaction.user }).catch((err) => c.error(err, __filename))
 
             if (!queue.connection) 
-            await queue.connect(vc).catch((err) => c.error(err).then(queue.destory()))
+            await queue.connect(vc).catch((err) => c.error(err, __filename).then(queue.destory()))
 
             queue.addTrack(audio.tracks[0])
             interaction.channel.send({
@@ -53,7 +53,7 @@ module.exports = {
                 await queue.play()
             } 
         } catch (err) {
-            c.error(err)
+            c.error(err, __filename)
             return interaction.channel.send('Error playing the audio!')
         }
     }
