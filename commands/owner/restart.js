@@ -4,10 +4,10 @@ const { exec } = require('child_process');
 
 module.exports = {
     callback: async (message) => {
-        await message.channel.send('Client shutting down...')
+        const msg = await message.channel.send('Client restarting...')
 
         try {
-            exec("npm run stop", (error, stdout, stderr) => {
+            exec("npm run restart", (error, stdout, stderr) => {
                 if (error) {
                     c.err(`error: ${error.message}`)
                     return
@@ -18,9 +18,10 @@ module.exports = {
                 }
                 c.info(`stdout: ${stdout}`)
             })
+            await msg.channel.send('Client restarted!')
         } catch (err) {
             c.error(err)
-            message.channel.send(`Error shutting down that process:\n\`\`\`${err}\`\`\``)
+            message.channel.send(`Error restarting client:\n\`\`\`${err}\`\`\``)
         }
     }
 }
