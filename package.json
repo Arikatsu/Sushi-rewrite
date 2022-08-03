@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node index.js",
-    "start": "pm2 start --no-daemon sushi-v2 --update-env",
-    "start:first": "pm2 start --no-daemon index.js --name \"sushi-v2\"",
+    "start": "pm2 start --no-daemon index.js --name \"sushi-v2\" --update-env",
     "restart": "pm2 restart --no-daemon \"sushi-v2\" --update-env",
     "stop": "pm2 stop \"sushi-v2\""
   },

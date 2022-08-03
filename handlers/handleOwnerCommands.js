@@ -44,7 +44,7 @@ module.exports = async (client) => {
     c.info(`Logging owner commands: [${Object.keys(commands).join(', ')}]`, __filename)
 
     client.on('messageCreate', (message) => {
-        if (message.author.bot || message.author.id != config.ownerID) return
+        if (message.author.bot || message.author.id != config.ownerId) return
 
         var commandName
         if (message.content.startsWith(config.prefix)) {
