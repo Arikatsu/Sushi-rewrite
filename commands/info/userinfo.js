@@ -4,6 +4,13 @@ const Logger = require('../../utils/logger')
 const c = new Logger()
 const moment = require('moment')
 
+const stat = {
+    online: "https://emoji.gg/assets/emoji/9166_online.png",
+    idle: "https://emoji.gg/assets/emoji/3929_idle.png",
+    dnd: "https://emoji.gg/assets/emoji/2531_dnd.png",
+    offline: "https://emoji.gg/assets/emoji/7445_status_offline.png"
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('userinfo')
@@ -15,12 +22,6 @@ module.exports = {
             user = interaction.user
         }
         let member = await interaction.guild.members.fetch(user.id)
-        let stat = {
-            online: "https://emoji.gg/assets/emoji/9166_online.png",
-            idle: "https://emoji.gg/assets/emoji/3929_idle.png",
-            dnd: "https://emoji.gg/assets/emoji/2531_dnd.png",
-            offline: "https://emoji.gg/assets/emoji/7445_status_offline.png"
-        }
         let badges = await user.flags
         badges = await badges ? badges.toArray() : ["None"]
 
@@ -68,8 +69,9 @@ module.exports = {
             { name: "Information", value: `ID: \`${user.id}\`\nDiscriminator: ${user.discriminator}\nBot: ${user.bot}` },
             { name: "Badges", value: `${badgeString}` || "None" }
         )
-            .setFooter({ text: member.presence.status, iconURl: stat[member.presence.status] })
+            .setFooter({ text: member.presence.status, iconURL: stat[member.presence.status] })
 
+        c.raw(member.presence.status, __filename)
         return interaction.reply({ embeds: [embed] }).catch(err => {
             interaction.reply("Error : " + err)
             return c.error(err, __filename)
