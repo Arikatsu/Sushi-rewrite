@@ -70,8 +70,8 @@ module.exports = {
             { name: "Badges", value: `${badgeString}` || "None" }
         )
             .setFooter({ text: member.presence.status, iconURL: stat[member.presence.status] })
+            .setColor('RANDOM')
 
-        c.raw(member.presence.status, __filename)
         return interaction.reply({ embeds: [embed] }).catch(err => {
             interaction.reply("Error : " + err)
             return c.error(err, __filename)
