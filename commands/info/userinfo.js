@@ -11,6 +11,13 @@ const stat = {
     offline: "https://emoji.gg/assets/emoji/7445_status_offline.png"
 }
 
+const embedColor = {
+    online: 0x00ff00,
+    idle: 0xffff00,
+    dnd: 0xff0000,
+    offline: 0x0000ff
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('userinfo')
@@ -58,7 +65,7 @@ module.exports = {
             }
         }
 
-        embed.setColor(user.displayHexColor === "#000000" ? "#ffffff" : user.displayHexColor)
+        embed.setColor(embedColor[member.presence.status])
         embed.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ dynamic: true }) })
         if (member.nickname !== null) embed.addField("Nickname", member.nickname)
 
@@ -70,7 +77,6 @@ module.exports = {
             { name: "Badges", value: `${badgeString}` || "None" }
         )
             .setFooter({ text: member.presence.status, iconURL: stat[member.presence.status] })
-            .setColor('RANDOM')
 
         return interaction.reply({ embeds: [embed] }).catch(err => {
             interaction.reply("Error : " + err)
