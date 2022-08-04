@@ -1,5 +1,6 @@
-const Logger = require('../../utils/logger');
-const c = new Logger();
+const { MessageEmbed } = require("discord.js");
+const Logger = require('../../utils/logger')
+const c = new Logger()
 
 module.exports = {
     callback: async (message, client, ...args) => {
@@ -15,13 +16,12 @@ module.exports = {
         let title = titleArray.join(' ')
         let description = descriptionArray.join(' ')
 
-        const msg = {
-            title: title,
-            description: description,
-            color: 'RANDOM',
-            timestamp: new Date(),
-            footer: { text: message.author.tag, icon_url: message.author.avatarURL() }
-        }
+        const msg = new MessageEmbed()
+            .setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
+            .setTitle(title)
+            .setDescription(description)
+            .setColor("RANDOM")
+            .setTimestamp()
 
         message.channel.send({ embeds: [msg] })
 
