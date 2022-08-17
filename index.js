@@ -1,9 +1,10 @@
-const { Client, Collection } = require("discord.js");
+const { Client, Collection } = require("discord.js")
 const fs = require('fs')
-const { token } = require('./config.json')
+const { token, mongo_srv } = require('./config.json')
 const { Player } = require('discord-player')
 const Logger = require('./utils/logger')
 const c = new Logger()
+const mongoose = require('mongoose')
 
 const client = new Client({
     presence: {
@@ -40,6 +41,11 @@ client.player = player
 
 app.get('/', (req, res) => res.send('bot is working'));
 app.listen(port, () => c.info(`Your app is listening at http://localhost:${port}`, __filename));
+
+mongoose.connect(mongo_srv, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => c.info('Connected to the database', __filename)).catch(err => c.error(err, __filename));
 
 (async () => {
     for (file of handlers) {

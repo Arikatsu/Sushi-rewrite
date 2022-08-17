@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
-const fs = require('fs')
-const ch = require('../../db/welcome-ch.json')
+const ch = require('../../models/welcomeChSchema')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,18 +10,17 @@ module.exports = {
         .addChannelOption(option => option.setName('channel').setDescription('channel to set as welcome').setRequired(true)),
     async execute(interaction) {
         let channel = interaction.options.getChannel('channel');
-        if (!channel) {
-            channel = interaction.channel;
+        
+        let chCheck = await ch.exists({ guild_id: `${interaction.guild.id}` })
+
+        if (chCheck === null) {
+            await ch.create({ guild_id: `${interaction.guild.id}`, wel_ch_id: `${channel.id}` })
+            await interaction.reply(`<#${channel.id}> has been set as welcome channel!`)
         }
-        let json = null
-        try {
-            json = JSON.parse(ch)
-        } catch (e) {
-            json = ch
+
+        else {
+            await ch.findOneAndUpdate({ guild_id: `${interaction.guild.id}` }, { $set: { wel_ch_id: `${channel.id}` } })
+            await interaction.reply(`<#${channel.id}> has been set as welcome channel!`)
         }
-        json[interaction.guild.id] = channel.id
-        let data = JSON.stringify(json, null, 2)
-        fs.writeFileSync(`./db/welcome-ch.json`, data)
-        interaction.reply(`<#${channel.id}> has been set as welcome channel!`)
     }
 }

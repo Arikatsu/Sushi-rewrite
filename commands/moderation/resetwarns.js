@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
-const fs = require('fs')
-const warns = require('../../db/warns.json')
+const warns = require('../../models/warnSchema')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,22 +10,16 @@ module.exports = {
         .addUserOption(option => option.setName('user').setDescription('user to reset warns for').setRequired(true)),
     async execute(interaction) {
         let user = interaction.options.getUser('user')
-        let json = null
-        try {
-            json = JSON.parse(warns)
-        } catch (e) {
-            json = warns
-        }
+        
+        let warnCheck = await warns.exists({ guild_user_id: `${interaction.guild.id}_${user.id}` })
 
-        if (!json[`warns_for_${interaction.guild.id}_${user.id}`]) {
+        if (warnCheck === null) {
             interaction.reply(`\`${user.username}\` has no warns`)
         }
 
-        else if (json[`warns_for_${interaction.guild.id}_${user.id}`]) {
-            json[`warns_for_${interaction.guild.id}_${user.id}`] = 0
-            let data = JSON.stringify(json, null, 2)
-            fs.writeFileSync(`./db/warns.json`, data)
-            interaction.reply(`Warns for \`${user.username}\` has been reset`)
+        else {
+            await warns.deleteOne({ guild_user_id: `${interaction.guild.id}_${user.id}` })
+            await interaction.reply(`Warns for \`${user.username}\` has been reset`)
         }
     }
 }

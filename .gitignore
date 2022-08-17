@@ -3,6 +3,3 @@ node_modules/
 
 #no one likes config
 config.json
-
-#why will i leak database lol
-db/
