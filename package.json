@@ -1,7 +1,7 @@
 {
   "name": "sushi-rewrite",
   "version": "1.0.0",
-  "description": "",
+  "description": "A multipurpose discord bot written in node.js",
   "main": "index.js",
   "scripts": {
     "test": "node index.js",
