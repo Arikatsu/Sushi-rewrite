@@ -13,6 +13,5 @@ rewritten version of my discord bot `Sushi` in discordjs v13
 * [ ] voice
 * [ ] nsfw
 * [x] owner
-* [ ] suggestion
 * [x] utility
 * [ ] rank system
