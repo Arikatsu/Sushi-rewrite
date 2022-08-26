@@ -1,7 +1,7 @@
 const { Client, Collection } = require("discord.js")
+const { createAudioPlayer, NoSubscriberBehavior } = require("@discordjs/voice")
 const fs = require('fs')
 const { token, mongo_srv } = require('./config.json')
-const { Player } = require('discord-player')
 const Logger = require('./utils/logger')
 const c = new Logger()
 const mongoose = require('mongoose')
@@ -28,17 +28,6 @@ const handlers = fs.readdirSync("./handlers").filter(file => file.endsWith(".js"
 const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
 const commandFolder = fs.readdirSync("./commands")
 
-const player = new Player(client, {
-    leaveOnEnd: false,
-    leaveOnStop: false,
-    leaveOnEmpty: false,
-    leaveOnEmptyCooldown: 60000,
-    autoSelfDeaf: true,
-    initialVolume: 100
-})
-
-client.player = player
-
 app.get('/', (req, res) => res.send('bot is working'));
 app.listen(port, () => c.info(`Your app is listening at http://localhost:${port}`, __filename));
 
@@ -58,10 +47,13 @@ mongoose.connect(mongo_srv, {
 
 client.on("warn", (warning) => c.warn(warning, __filename))
 
-player.on("error", (queue, error) => {
-    c.error(error, __filename)
+/* VOICE */
+client.player = createAudioPlayer({
+    behaviors: {
+        noSubscriber: NoSubscriberBehavior.Play
+    }
 })
 
-player.on('connectionError', (queue, error) => {
-    c.error(`Error emitted from the connection ${error.message}`, __filename);
+client.player.on('error', (err) => {
+    c.error(err, __filename)
 })

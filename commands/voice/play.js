@@ -1,60 +1,86 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
+const { joinVoiceChannel, createAudioResource } = require('@discordjs/voice')
+const play = require('play-dl')
 const Logger = require('../../utils/logger')
 const c = new Logger()
+const QueueHelper = require('../../utils/queue-helper')
+const q = new QueueHelper()
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('play')
         .setDescription('plays an audio')
-        .addStringOption(o => o.setName('audio').setDescription('the url or the name of the audio you want to play').setRequired(true)),
+        .addSubcommand(sub =>
+            sub
+                .setName('audio')
+                .setDescription('plays an audio from a url or search')
+                .addStringOption(option => option.setName('query').setDescription('url or name of the audio').setRequired(true))
+        )
+        .addSubcommand(sub =>
+            sub
+                .setName('playlist')
+                .setDescription('plays an audio from a youtube or spotify playlist')
+                .addStringOption(option => option.setName('playlist').setDescription('url of the playlist').setRequired(true))
+        ),
     async execute(interaction, client) {
         try {
-            let query = interaction.options.getString('audio')
             let member = interaction.guild.members.cache.get(interaction.user.id)
-            let vc = member.voice.channel
+            let vc = member.voice?.channel
 
-            if (!vc) 
-            return interaction.reply('You must be in a voice channel to use this command!')
+            interaction.reply('Searching for audio...')
 
-            if (vc.full)
-            return interaction.reply('This voice channel is full!')
-
-            interaction.reply('Checking for pre-requisites...')
-
-            let queue = client.player.getQueue(interaction.guild.id)
-
-            if (!queue) {
-                c.raw('No queue found, creating one... for ' + interaction.guild.id, __filename)
-                client.player.createQueue(interaction.guild.id, {
-                    channel: {
-                        metadata: vc
-                    }
-                })
-                queue = client.player.getQueue(interaction.guild.id)
-            }
-
-            let audio = await client.player.search(query, { requestedBy: interaction.user }).catch((err) => c.error(err, __filename))
-
-            if (!queue.connection) 
-            await queue.connect(vc).catch((err) => c.error(err, __filename).then(queue.destory()))
-
-            queue.addTrack(audio.tracks[0])
-            interaction.channel.send({
-                embeds: [{
-                    title: 'Added to queue',
-                    description: `[${audio.tracks[0].title}](${audio.tracks[0].url})`,
-                    color: 'RANDOM',
-                    timestamp: new Date(),
-                    footer: { text: `Requested by ${interaction.user.tag}`, icon_url: interaction.user.avatarURL() }
-                }]
+            const connection = joinVoiceChannel({
+                channelId: vc.id,
+                guildId: interaction.guild.id,
+                adapterCreator: interaction.guild.voiceAdapterCreator
             })
 
-            if (!queue.playing) {
-                await queue.play()
-            } 
+            if (interaction.options.getSubcommand() === 'audio') {
+                let query = interaction.options.getString('query')
+                let audio_info = await play.search(query, {
+                    limit: 1
+                })
+
+                let stream = await play.stream(audio_info[0].url)
+
+                if (client.player.state.status === 'idle') {
+                    q.addToQueue(interaction.guild.id, stream.stream)
+                    let resource = createAudioResource(stream.stream, {
+                        inputType: stream.type
+                    })
+                    client.player.play(resource)
+                } else if (client.player.state.status === 'playing') {
+                    q.addToQueue(interaction.guild.id, stream.stream)
+                    interaction.channel.send('Added to queue')
+                }
+                connection.subscribe(client.player)
+
+            } else if (interaction.options.getSubcommand() === 'playlist') {
+                let playlist = interaction.options.getString('playlist')
+                if (playlist.startsWith('https://open.spotify.com/playlist/')) {
+                    let pl_info = await play.spotify(playlist)
+                    let tracks = pl_info.all_tracks()
+                    for (let track of tracks) {
+                        let audio_info = await play.search(track.name, {
+                            limit: 1
+                        })
+                        let stream = await play.stream(audio_info[0].url)
+                        let resource = createAudioResource(stream.stream, {
+                            inputType: stream.type
+                        })
+
+                        if (client.player.state === AudioPlayerStatus.Idle) {
+                            await client.player.play(resource)
+                        } else if (client.player.state === AudioPlayerStatus.Playing) {
+                            await client.player
+                        }
+                        connection.subscribe(client.player)
+                    }
+                }
+            }
         } catch (err) {
             c.error(err, __filename)
-            return interaction.channel.send('Error playing the audio!')
+            return interaction.channel.send({ content: 'Error playing the audio!', ephemeral: true })
         }
     }
 }
