@@ -45,8 +45,6 @@ mongoose.connect(mongo_srv, {
     client.login(token)
 })();
 
-client.on("warn", (warning) => c.warn(warning, __filename))
-
 /* VOICE */
 client.player = createAudioPlayer({
     behaviors: {

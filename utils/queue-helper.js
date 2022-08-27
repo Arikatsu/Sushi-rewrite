@@ -56,6 +56,18 @@ class QueueHelper {
         }
         fs.writeFileSync('./utils/queue.json', JSON.stringify(this.queues, null, 2))
     }
+
+    getRandomSong(guildId) {
+        let queue = this.queues[guildId]
+        let index = Math.floor(Math.random() * queue.length)
+        return queue[index]
+    }
+
+    getNextSong(guildId) {
+        let queue = this.queues[guildId]
+        let index = 0
+        return queue[index]
+    }
 }
 
 module.exports = QueueHelper;
