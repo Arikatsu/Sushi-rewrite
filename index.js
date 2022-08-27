@@ -23,6 +23,7 @@ const port = 3000;
 
 client.commands = new Collection();
 client.snipes = new Collection();
+client.testCommands = new Collection();
 
 const handlers = fs.readdirSync("./handlers").filter(file => file.endsWith(".js"));
 const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
@@ -31,12 +32,19 @@ const commandFolder = fs.readdirSync("./commands")
 app.get('/', (req, res) => res.send('bot is working'));
 app.listen(port, () => c.info(`Your app is listening at http://localhost:${port}`, __filename));
 
-mongoose.connect(mongo_srv, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => c.info('Connected to the database', __filename)).catch(err => c.error(err, __filename));
+/* VOICE */
+client.player = createAudioPlayer({
+    behaviors: {
+        noSubscriber: NoSubscriberBehavior.Play
+    }
+});
 
 (async () => {
+    mongoose.connect(mongo_srv, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }).then(() => c.info('Connected to the database', __filename)).catch(err => c.error(err, __filename));
+
     for (file of handlers) {
         require(`./handlers/${file}`)(client);
     }
@@ -45,13 +53,10 @@ mongoose.connect(mongo_srv, {
     client.login(token)
 })();
 
-/* VOICE */
-client.player = createAudioPlayer({
-    behaviors: {
-        noSubscriber: NoSubscriberBehavior.Play
+client.player.on('stateChange', (oldState, newState) => {
+    if (oldState == 'idle') {
+        c.raw('test', __filename)
+    } else if (newState == 'playing') {
+        c.raw('testplay', __filename)
     }
-})
-
-client.player.on('error', (err) => {
-    c.error(err, __filename)
 })

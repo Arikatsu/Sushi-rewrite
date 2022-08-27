@@ -3,3 +3,6 @@ node_modules/
 
 #no one likes config
 config.json
+
+#updates too often
+utils/queue.json

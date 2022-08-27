@@ -7,6 +7,8 @@ const QueueHelper = require('../../utils/queue-helper')
 const q = new QueueHelper()
 
 module.exports = {
+    test: true,
+
     data: new SlashCommandBuilder()
         .setName('play')
         .setDescription('plays an audio')
@@ -41,16 +43,15 @@ module.exports = {
                     limit: 1
                 })
 
-                let stream = await play.stream(audio_info[0].url)
+                q.addToQueue(interaction.guild.id, audio_info[0].url)
 
                 if (client.player.state.status === 'idle') {
-                    q.addToQueue(interaction.guild.id, stream.stream)
+                    let stream = await play.stream(audio_info[0].url)
                     let resource = createAudioResource(stream.stream, {
                         inputType: stream.type
                     })
                     client.player.play(resource)
                 } else if (client.player.state.status === 'playing') {
-                    q.addToQueue(interaction.guild.id, stream.stream)
                     interaction.channel.send('Added to queue')
                 }
                 connection.subscribe(client.player)
@@ -61,21 +62,9 @@ module.exports = {
                     let pl_info = await play.spotify(playlist)
                     let tracks = pl_info.all_tracks()
                     for (let track of tracks) {
-                        let audio_info = await play.search(track.name, {
-                            limit: 1
-                        })
-                        let stream = await play.stream(audio_info[0].url)
-                        let resource = createAudioResource(stream.stream, {
-                            inputType: stream.type
-                        })
-
-                        if (client.player.state === AudioPlayerStatus.Idle) {
-                            await client.player.play(resource)
-                        } else if (client.player.state === AudioPlayerStatus.Playing) {
-                            await client.player
-                        }
-                        connection.subscribe(client.player)
+                        console.log(track.url)
                     }
+                    connection.subscribe(client.player)
                 }
             }
         } catch (err) {
