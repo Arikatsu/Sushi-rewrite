@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js')
+const { MessageEmbed, MessageAttachment } = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,8 +14,11 @@ module.exports = {
                 .setAuthor({ name: msg.author.tag })
                 .setDescription(msg.content)
             
-            const imagesString = msg.images.join('\n')
-            await interaction.reply({ content: imagesString, embeds: [embed] })
+            let attachments = []
+            msg.images.forEach(image => {
+                attachments.push(new MessageAttachment(image))
+            })
+            await interaction.reply({ files: attachments, embeds: [embed] })
         }
         else {
             let embed = new MessageEmbed()
