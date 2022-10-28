@@ -8,20 +8,21 @@ module.exports = {
     async execute(interaction, client) {
         const msg = client.snipes.get(interaction.channel.id)
         if (!msg) return interaction.reply("There's nothing to snipe!")
-        else if (msg.image) {
+        else if (msg.images != null) {
             let embed = new MessageEmbed()
-            .setColor('#0099ff')
-            .setAuthor({ name: msg.author.tag })
-            .setDescription(msg.content)
-            .setImage(msg.image.url)
-            await interaction.reply({embeds: [embed]})
+                .setColor('#0099ff')
+                .setAuthor({ name: msg.author.tag })
+                .setDescription(msg.content)
+            
+            const imagesString = msg.images.join('\n')
+            await interaction.reply({ content: imagesString, embeds: [embed] })
         }
         else {
             let embed = new MessageEmbed()
             .setColor('#0099ff')
             .setAuthor({ name: msg.author.tag })
             .setDescription(msg.content)
-            await interaction.reply({embeds: [embed]})
+            await interaction.reply({ embeds: [embed] })
         }
     }
 }
