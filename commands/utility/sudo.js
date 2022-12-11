@@ -16,5 +16,9 @@ module.exports = {
             channel: interaction.channel.id
         })
         await webhook.send(text).then(() => webhook.delete())
-    } 
+        if (interaction.guild.id == '878562477275750430') {
+            const logChannel = client.channels.cache.get('970054253525733386')
+            logChannel.send(`**${interaction.user.tag}** used the \`sudo\` command in **${interaction.channel.name}** with the text \`${text}\``)
+        }
+    }
 }
