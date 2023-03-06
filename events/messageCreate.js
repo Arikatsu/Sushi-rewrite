@@ -9,7 +9,7 @@ module.exports = {
         {
             if (message.author.bot) return;
             else if (message.author.id === '558566227946242048' && random == rndInt)
-                message.channel.send("kizu leave now!");
+                message.channel.send("https://cdn.discordapp.com/attachments/780888728834539532/1082286487330103296/image0.png");
             else if (message.author.id === '899953815887958016' && rndIlu == 25) {
                 message.channel.send('<@899953815887958016> I will eat your pancreas')
             }
